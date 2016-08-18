@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+    <head>
+
+    </head>
+    
+    <body>
+
+        <form action="/login" method="POST">
+	        <input type="text" id="login" name="login" value="login"/>
+	        <br>                    
+	        <input type="password" id="pass" name="pass" value="pass"/>
+	          
+	        <input type="submit" id="submitButton" value="login" />
+	    </form>
+
+    </body>
+</html>

@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>{{Title}}</title>
+
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href='http://fonts.googleapis.com/css?family=Bitter' rel='stylesheet' type='text/css'>
+        <link href='/normalize.css' rel='stylesheet' type='text/css'>
+        <link href='/blog.css' rel='stylesheet' type='text/css'>
+
+    </head>
+	
+    <body>
+    	<header> </header>
+		<nav>
+            <a id="home" href="/">Home</a> |
+            <a id="About" href="/about">About</a> |
+            <a id="About" href="/">Contact</a> 
+        </nav>    
+    
+
+		<section>
+		    <h1>Blog Posts:</h1>
+
+			
+		    <p>
+			    <ol>
+			        {{REPEAT}}
+			        <li>
+			            <h2><a href="{{Post1.Link}}">{{Post1.Title}}</a></h2>
+			        </li>
+			        {{ENDREPEAT}}
+
+			    </ol>
+			</p>
+			
+		</section>
+
+		<footer></footer>
+	</body>
+</html>

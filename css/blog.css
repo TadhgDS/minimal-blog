@@ -1,0 +1,82 @@
+@font-face {
+  font-family: "PT Serif";
+  font-style: normal;
+  font-weight: 400;
+  color: black;
+  src: local("PT Serif"), local("PTSerif-Regular"), url("http://fonts.gstatic.com/s/ptserif/v8/I-OtoJZa3TeyH6D9oli3ifesZW2xOQ-xsNqO47m55DA.woff2") format("woff2"), url("http://fonts.gstatic.com/s/ptserif/v8/sDRi4fY9bOiJUbgq53yZCfesZW2xOQ-xsNqO47m55DA.woff") format("woff");
+}
+@import url(http://fonts.googleapis.com/css?family=PT+Serif|PT+Serif:b|PT+Serif:i|PT+Sans|PT+Sans:b);
+
+
+
+* {
+    font-family: 'PT Serif', serif;
+    text-decoration:none;
+}
+#postdate {
+	text-align: right;
+}
+
+body {
+    background-color: #FFFFE0;
+    padding-left: 10%;
+    padding-right: 25%;
+}
+
+header {
+   /* background-color:black;*/
+    color:white;
+    text-align:center;
+    padding: 2%;
+    font-family: "PT Sans", sans-serif;
+
+}
+nav {
+    line-height:30px;
+   /* background-color:#B76FB7;*/
+   	padding-left: 200px; 
+    height:20px; 
+}
+
+aside {
+	font-size: x-small;
+	right: 0;
+	padding-right: 140px;
+	width: 150px;
+	position: absolute;
+	color:black;
+}
+
+code {
+font-family: "Lucida Console", Monaco, monospace;
+  font-style: normal;
+  font-weight: 700;
+
+  color: navy;
+
+}
+
+section {
+    padding-right: 50px; 
+    padding-left: 80px;
+    
+    background-color: #FFFFE0;
+    height: 650px;
+}
+footer {
+   
+    color:white;
+    clear:both;
+    padding:5px; 
+}
+article {
+	font-size: small;
+}
+
+fieldset {
+}
+
+h1{
+	font-size:32px;
+    line-height:8px;
+}

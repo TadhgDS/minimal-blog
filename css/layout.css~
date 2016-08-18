@@ -1,0 +1,21 @@
+
+main,nav {
+	/*margin: auto auto;
+	width: 600px;
+	*/
+}
+
+html {
+	height: 100%;
+	width: 100%;
+}
+
+}
+nav {
+    line-height:30px;
+    background-color:#eeeeee;
+    height:300px;
+    width:100px;
+    float:left;
+    padding:5px; 
+}

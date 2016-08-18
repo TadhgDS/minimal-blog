@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href='http://fonts.googleapis.com/css?family=Bitter' rel='stylesheet' type='text/css'>
+        <link href='/normalize.css' rel='stylesheet' type='text/css'>
+        <link href='/blog.css' rel='stylesheet' type='text/css'>
+    </head>
+    
+    <body>
+        <header></header>
+
+        <nav>
+            <a id="home" href="/">Home</a> |
+            <a id="About" href="/about">About</a> |
+            <a id="About" href="/">Contact</a> 
+        </nav>    
+            <article>
+                <h5 id="postdate">{{Date}}</h5>
+                <h1 id="title">{{Title}}</h1>
+
+                <main id="mainContent">
+
+
+                    {{Contents}}
+
+
+                </main>
+            </article>
+                
+        <div>    
+            <div id="disqus_thread"></div>
+                <script type="text/javascript">
+                    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+                    var disqus_shortname = 'asdkkdkdkkdw'; // required: replace example with your forum shortname
+
+                    /* * * DON'T EDIT BELOW THIS LINE * * */
+                    (function() {
+                        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                    })();
+                </script>
+            </div>            
+        <footer></footer>
+    </body>
+</html>
+
