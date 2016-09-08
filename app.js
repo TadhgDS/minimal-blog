@@ -3,9 +3,6 @@ var fs = require('fs');
 var url = require('url');
 var markdown = require('markdown').markdown;
 var currentDirectory = __dirname + '/';
-
-
-
 var express = require('express');
 
 
@@ -136,6 +133,28 @@ app.get('/about', function (req, res){
 });
 
 
+app.post('/preview/',function(req,res){
+
+    var jsonString = req.body;
+    var theObject = { "title":req.body.title , "textarea":req.body.textarea };
+    theObject.title = markdown.toHTML(theObject.title);
+    theObject.textarea = markdown.toHTML(theObject.textarea);
+    
+
+    res.writeHead(200, {'Content-Type': 'application/json'});
+    res.end(JSON.stringify(theObject));
+
+});
+
+app.get('/edit',function(req,res){
+    fs.readFile(currentDirectory + 'templates/edit.html', 'utf8', function(err, template) {
+        if (err) console.log(err);
+           
+        res.writeHead(200, {'Content-Type': 'text/html'});
+        res.end(template);
+    });
+});
+
 
 /*============================
 
@@ -192,6 +211,31 @@ app.get('/', function (req, res){
 });
 
 
+
+app.get('/*',function(req,res){
+    // read the html file
+    // and spit them into the response
+  
+  if(res.req.url == "/abcd"){
+    console.log("oh shit");
+  }
+    fs.readFile(currentDirectory + req.url, 'utf8', function (err,data) {
+        if (err) {
+            res.writeHead(404, {'Content-Type': 'text/html'});
+            res.end('Ooops ' + req.url + ' couldnt be found!');
+            return console.log(err);
+        }
+        
+        var type =  getFileExtension(req.url);
+        
+        res.writeHead(200, {'Content-Type': 'text/' + type});
+        res.end(data);
+    });
+
+
+// console.log(req);
+
+});
 
 
 

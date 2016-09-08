@@ -2,7 +2,9 @@
   font-family: "PT Serif";
   font-style: normal;
   font-weight: 400;
+  font-size: 32px;
   color: black;
+
   src: local("PT Serif"), local("PTSerif-Regular"), url("http://fonts.gstatic.com/s/ptserif/v8/I-OtoJZa3TeyH6D9oli3ifesZW2xOQ-xsNqO47m55DA.woff2") format("woff2"), url("http://fonts.gstatic.com/s/ptserif/v8/sDRi4fY9bOiJUbgq53yZCfesZW2xOQ-xsNqO47m55DA.woff") format("woff");
 }
 @import url(http://fonts.googleapis.com/css?family=PT+Serif|PT+Serif:b|PT+Serif:i|PT+Sans|PT+Sans:b);
@@ -19,8 +21,6 @@
 
 body {
     background-color: #FFFFE0;
-    padding-left: 10%;
-    padding-right: 25%;
 }
 
 header {
@@ -34,15 +34,15 @@ header {
 nav {
     line-height:30px;
    /* background-color:#B76FB7;*/
-   	padding-left: 200px; 
+   	padding-left: 20%; 
     height:20px; 
 }
 
 aside {
 	font-size: x-small;
 	right: 0;
-	padding-right: 140px;
-	width: 150px;
+	/*padding-right: 140px;*/
+	width: 20%;
 	position: absolute;
 	color:black;
 }
@@ -57,26 +57,34 @@ font-family: "Lucida Console", Monaco, monospace;
 }
 
 section {
-    padding-right: 50px; 
-    padding-left: 80px;
-    
+    padding-right: 20%; 
+    padding-left: 12%;  
     background-color: #FFFFE0;
-    height: 650px;
+    height: 100%;
 }
+article {
+  font-size: small;
+  padding-left: 12%;
+  padding-right: 20%;
+}
+
+
 footer {
-   
     color:white;
     clear:both;
     padding:5px; 
 }
-article {
-	font-size: small;
-}
+
 
 fieldset {
 }
 
 h1{
-	font-size:32px;
-    line-height:8px;
+	font-size:2em;
+  line-height:1em;
+}
+
+div #disqus_thread {
+  padding-left: 12%;
+  padding-right: 20%;
 }

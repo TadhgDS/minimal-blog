@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>{{Title}}</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href='/normalize.css' rel='stylesheet' type='text/css'>
+     <!--   <link href='/blog.css' rel='stylesheet' type='text/css'> -->
+        <style> 
+        	#output {
+        		width:700px;
+                height: 800px;
+        		display:inline-block;
+                vertical-align: top;
+        	}
+        	article {
+        		width:400px;
+        		display:inline-block;
+                vertical-align: top;
+        	}
+        	main {
+        		margin:auto;
+        	}
+            #textarea { 
+                width: 380px;
+                height: 800px;
+            }
+        </style>
+
+        
+        <script type="text/javascript">
+            var postObject = function(url, obj, callback) {
+                var xmlhttp = new XMLHttpRequest();
+
+                xmlhttp.onreadystatechange = function() {
+                    if (xmlhttp.readyState === 4) {
+                       if(xmlhttp.status === 200){
+                           callback(null, xmlhttp.responseText);
+                       }
+                       else {
+                            callback(xmlhttp, null);
+                       }
+                    }
+                };
+
+                xmlhttp.open('POST', url, true)
+                xmlhttp.setRequestHeader('Content-type','application/json');
+                xmlhttp.send(JSON.stringify(obj));
+            };
+            </script>
+        </script>
+    </head>
+    
+    <body>
+        <nav>
+            <a id="home" href="/">Home</a>
+        </nav>
+    
+        <main>
+        
+            <article>
+                <fieldset>
+                    <form action="/submit" method="POST">
+                    <input type="text" id="title" name="title"/>
+                    <textarea type="text" id="textarea" name="textarea"></textarea>
+                    <input type="text" id="sn1" name="sn1" value="sn1"/>
+                    <br>                    
+                    <input type="text" id="sn2" name="sn2" value="sn2"/>
+                    <br>
+                    <input type="text" id="sn3" name="sn3" value="sn3"/>
+                    <br>                    
+                    <input type="text" id="sn4" name="sn4" value="sn4"/>
+                    <br>                    
+                    <input type="text" id="sn5" name="sn5" value="sn5"/>
+                    <br>                                                    
+                    <input type="submit" id="submitButton" value="Submit now" />
+                </form>
+                </fieldset>
+
+            </article>
+
+                
+            <div id="output"></div>
+
+
+            <script type="text/javascript">
+            	var titletext = document.getElementById('title');
+                var textarea = document.getElementById('textarea');
+                var sidenote1 = document.getElementById('sn1');
+                var sidenote2 = document.getElementById('sn2');
+                var sidenote3 = document.getElementById('sn3');
+                var sidenote4 = document.getElementById('sn4');
+                var sidenote5 = document.getElementById('sn5');
+
+
+
+                var parserUrl = '/preview/';
+
+            	textarea.addEventListener('keyup', function() {
+
+                    var postContentObject = {title:titletext.value, textarea:textarea.value};
+
+                    postObject(parserUrl, postContentObject, function(err, response) {
+                        if (err) alert(JSON.stringify(err));
+
+                        var output = document.getElementById('output');
+                        output.innerHTML = JSON.parse(response).textarea;
+                    });
+                });
+
+            </script>
+
+
+        </main>
+    </body>
+</html>
