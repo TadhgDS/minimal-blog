@@ -54,49 +54,63 @@ app.get('/normalize.css',function(req,res){
 });
 
 
-app.get('/post*',function(req,res)	{
-    fs.readFile(currentDirectory + 'templates/entry', 'utf8', function(err, template) {
-        if (err) console.log(err);
-        var blogFileName = currentDirectory + 'blog-posts/' + getFileName(req.url);
-        fs.readFile(blogFileName, 'utf8', function(err, postMarkUp) {            
-            var jsonString = JSON.parse(postMarkUp);
-            var post = markdown.toHTML(jsonString.mainText);
-    
-            var sidenoteWithTags;
-            if(post.indexOf("{{1}}") > -1){
-                sidenoteWithTags = "<aside>" + jsonString.sn1 + "</aside>"; 
-                post = post.replace("{{1}}",sidenoteWithTags);
-            }
-            if(post.indexOf("{{2}}") > -1){
-                sidenoteWithTags = "<aside>" + jsonString.sn2 + "</aside>";
-                post = post.replace("{{2}}",sidenoteWithTags);
-            }
-            if(post.indexOf("{{3}}") > -1){        
-                sidenoteWithTags = "<aside>" + jsonString.sn3 + "</aside>";
-                post = post.replace("{{3}}",sidenoteWithTags);
-            }
-            if(post.indexOf("{{4}}") > -1){                
-                sidenoteWithTags = "<aside>" + jsonString.sn4 + "</aside>";
-                post = post.replace("{{4}}",sidenoteWithTags);
-            }
-            if(post.indexOf("{{5}}") > -1){
-                sidenoteWithTags = "<aside>" + jsonString.sn5 + "</aside>";
-                post = post.replace("{{5}}",sidenoteWithTags);
-            }
 
-            var html = '';
-    
-            html = template.replace('{{Contents}}', post);
-            html = html.replace('{{Title}}', jsonString.title);
-            
 
-            html = html.replace('{{Date}}', getDateString(jsonString.submitDate));
-            
-           
-            res.writeHead(200, {'Content-Type': 'text/html'});
-            res.end(html);
+
+app.get('/post*',function(req,res)	{   
+    var blogPostsFolder = currentDirectory + 'blog-posts/'; 
+
+    var postExits = doesBlogPostExist(getFileName(req.url));
+    if(postExits){
+
+        console.log("gets this far?");
+
+        fs.readFile(currentDirectory + 'templates/entry', 'utf8', function(err, template) {
+            if (err) {
+                res.writeHead(404, {'Content-Type': 'text/html'});
+                res.end('Ooops ' + req.url + ' couldnt be found!');
+                return console.log(err);
+            }
+            var blogFileName = blogPostsFolder + getFileName(req.url);
+            fs.readFile(blogFileName, 'utf8', function(err, postMarkUp) {            
+
+
+                var jsonString = JSON.parse(postMarkUp);
+                var post = markdown.toHTML(jsonString.mainText);
+        
+                var sidenoteWithTags;
+                if(post.indexOf("{{1}}") > -1){
+                    sidenoteWithTags = "<aside>" + jsonString.sn1 + "</aside>"; 
+                    post = post.replace("{{1}}",sidenoteWithTags);
+                }
+                if(post.indexOf("{{2}}") > -1){
+                    sidenoteWithTags = "<aside>" + jsonString.sn2 + "</aside>";
+                    post = post.replace("{{2}}",sidenoteWithTags);
+                }
+                if(post.indexOf("{{3}}") > -1){        
+                    sidenoteWithTags = "<aside>" + jsonString.sn3 + "</aside>";
+                    post = post.replace("{{3}}",sidenoteWithTags);
+                }
+                if(post.indexOf("{{4}}") > -1){                
+                    sidenoteWithTags = "<aside>" + jsonString.sn4 + "</aside>";
+                    post = post.replace("{{4}}",sidenoteWithTags);
+                }
+                if(post.indexOf("{{5}}") > -1){
+                    sidenoteWithTags = "<aside>" + jsonString.sn5 + "</aside>";
+                    post = post.replace("{{5}}",sidenoteWithTags);
+                }
+
+                var html = '';
+                html = template.replace('{{Contents}}', post);
+                html = html.replace('{{Title}}', jsonString.title);
+                html = html.replace('{{Date}}', getDateString(jsonString.submitDate));
+                
+               
+                res.writeHead(200, {'Content-Type': 'text/html'});
+                res.end(html);
+            });   
         });
-    });
+    }
 });
 
 app.get('/index.html',function(req,res){
@@ -220,17 +234,17 @@ app.get('/*',function(req,res){
     console.log("oh shit");
   }
     fs.readFile(currentDirectory + req.url, 'utf8', function (err,data) {
-        if (err) {
-            res.writeHead(404, {'Content-Type': 'text/html'});
-            res.end('Ooops ' + req.url + ' couldnt be found!');
-            return console.log(err);
-        }
-        
-        var type =  getFileExtension(req.url);
-        
-        res.writeHead(200, {'Content-Type': 'text/' + type});
-        res.end(data);
-    });
+    if (err) {
+        res.writeHead(404, {'Content-Type': 'text/html'});
+        res.end('Ooops ' + req.url + ' couldnt be found!');
+        return console.log(err);
+    }
+    
+    var type =  getFileExtension(req.url);
+    
+    res.writeHead(200, {'Content-Type': 'text/' + type});
+    res.end(data);
+});
 
 
 // console.log(req);
@@ -249,6 +263,22 @@ var server = app.listen(3000, function () {
 
 });
 
+
+var doesBlogPostExist = function(postName){
+    var postExists = false;
+    var blogPostsFolder = currentDirectory + 'blog-posts/'; 
+
+    var files = fs.readdirSync(blogPostsFolder);
+
+    for(var blogPostIndex in files){
+        if(files[blogPostIndex] == postName){
+            postExists = true;
+            break;
+        }
+    }     
+
+    return postExists;
+};
 
 var getFileExtension = function(url) {
     var indexOfDot = url.lastIndexOf('.');
