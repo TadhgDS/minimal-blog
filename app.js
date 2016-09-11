@@ -104,14 +104,49 @@ app.get('/post*',function(req,res)	{
                 html = template.replace('{{Contents}}', post);
                 html = html.replace('{{Title}}', jsonString.title);
                 html = html.replace('{{Date}}', getDateString(jsonString.submitDate));
-                
-               
                 res.writeHead(200, {'Content-Type': 'text/html'});
                 res.end(html);
             });   
         });
     }
 });
+
+app.post('/submit*',function(req,res){
+    
+    if (req.method == 'POST') {
+        console.log("[200] " + req.method + " to " + req.url);
+
+        res.json(req.body.title + req.body.textarea);
+        var title = req.body.title;
+        title = title.replace(/ /g,"-");
+        var textarea = req.body.textarea;
+
+        //json obj
+        var postObj = {
+            title: req.body.title,
+            mainText: req.body.textarea,
+            submitDate: Date.now(),
+            editDate: "",
+            graphs: "",
+            sn1: req.body.sn1,
+            sn2: req.body.sn2,
+            sn3: req.body.sn3,
+            sn4: req.body.sn4,
+            sn5: req.body.sn5
+        }
+        var jsonObj = JSON.stringify(postObj);
+      
+        var filepath =  currentDirectory + 'blog-posts/' + title;
+
+        fs.writeFileSync(filepath, jsonObj);
+
+
+    } else {
+        console.log("[405] " + req.method + " to " + req.url);
+        res.writeHead(405, "Method not supported", {'Content-Type': 'text/html'});
+        res.end('<html><head><title>405 - Method not supported</title></head><body><h1>Method not supported.</h1></body></html>');
+    }
+ });
 
 app.get('/index.html',function(req,res){
     // read the html file

@@ -1,18 +1,8 @@
-@font-face {
-  font-family: "PT Serif";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 32px;
-  color: black;
-
-  src: local("PT Serif"), local("PTSerif-Regular"), url("http://fonts.gstatic.com/s/ptserif/v8/I-OtoJZa3TeyH6D9oli3ifesZW2xOQ-xsNqO47m55DA.woff2") format("woff2"), url("http://fonts.gstatic.com/s/ptserif/v8/sDRi4fY9bOiJUbgq53yZCfesZW2xOQ-xsNqO47m55DA.woff") format("woff");
-}
-@import url(http://fonts.googleapis.com/css?family=PT+Serif|PT+Serif:b|PT+Serif:i|PT+Sans|PT+Sans:b);
-
-
+@import 'https://fonts.googleapis.com/css?family=Roboto+Slab|7';
 
 * {
-    font-family: 'PT Serif', serif;
+    font-family: 'Roboto Slab', serif;
+    font-weight: 100;
     text-decoration:none;
 }
 #postdate {
@@ -20,52 +10,67 @@
 }
 
 body {
-    background-color: #FFFFE0;
+    background-color: #fff;
 }
 
+#nametitle {
+    font-size: 1.4em;
+    padding-left: 12%; 
+}
+
+/*
 header {
-   /* background-color:black;*/
     color:white;
     text-align:center;
     padding: 2%;
-    font-family: "PT Sans", sans-serif;
+    font-family: 'Roboto Slab', serif;
+}*/
 
-}
 nav {
     line-height:30px;
-   /* background-color:#B76FB7;*/
-   	padding-left: 20%; 
+   	padding-left: 12%; 
     height:20px; 
+
+    font-size: 0.8em;
 }
 
 aside {
 	font-size: x-small;
-	right: 0;
-	/*padding-right: 140px;*/
-	width: 20%;
+	right: 20%;
+	width: 18%;
 	position: absolute;
 	color:black;
 }
 
 code {
-font-family: "Lucida Console", Monaco, monospace;
+  font-family: "Lucida Console", Monaco, monospace;
   font-style: normal;
-  font-weight: 700;
-
-  color: navy;
+  font-weight: 550;
+  font-size: 0.8em;
+  color: grey;
 
 }
 
 section {
-    padding-right: 20%; 
+    padding-right: 40%; 
     padding-left: 12%;  
-    background-color: #FFFFE0;
+    background-color: #fff;
     height: 100%;
+    font-size:0.6em;
 }
+
+ul a:link {
+    color: black;
+}
+
+ul a:visited {
+    color: black;
+}
+
 article {
   font-size: small;
   padding-left: 12%;
-  padding-right: 20%;
+  padding-right: 40%;
 }
 
 
@@ -80,11 +85,11 @@ fieldset {
 }
 
 h1{
-	font-size:2em;
+	font-size:em;
   line-height:1em;
 }
 
 div #disqus_thread {
   padding-left: 12%;
-  padding-right: 20%;
+  padding-right: 40%;
 }

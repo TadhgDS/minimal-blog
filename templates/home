@@ -12,32 +12,38 @@
 
     </head>
 	
+
     <body>
-    	<header> </header>
-		<nav>
-            <a id="home" href="/">Home</a> |
-            <a id="About" href="/about">About</a> |
-            <a id="About" href="/">Contact</a> 
-        </nav>    
     
 
+
+        <div id="nametitle">TADHG PHILIBIN E SILVA</div>
+	
+    
+
+    <nav>
+            <a id="home" href="/">Home</a> |
+            <a id="about" href="/about">About</a> |
+            <a id="contact" href="/">Contact</a> 
+        </nav>    
+
+
 		<section>
-		    <h1>Blog Posts:</h1>
+		    <h1>Essays:</h1>
 
 			
 		    <p>
-			    <ol>
+			    <ul>
 			        {{REPEAT}}
 			        <li>
 			            <h2><a href="{{Post1.Link}}">{{Post1.Title}}</a></h2>
 			        </li>
 			        {{ENDREPEAT}}
 
-			    </ol>
+			    </ul>
 			</p>
 			
 		</section>
-
 		<footer></footer>
 	</body>
 </html>
