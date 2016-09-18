@@ -195,6 +195,7 @@ app.post('/preview/',function(req,res){
 
 });
 
+/*
 app.get('/edit',function(req,res){
     fs.readFile(currentDirectory + 'templates/edit.html', 'utf8', function(err, template) {
         if (err) console.log(err);
@@ -203,7 +204,7 @@ app.get('/edit',function(req,res){
         res.end(template);
     });
 });
-
+*/
 
 /*============================
 

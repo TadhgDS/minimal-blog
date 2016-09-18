@@ -12,16 +12,10 @@
 
     </head>
 	
-
     <body>
-    
-
-
         <div id="nametitle">TADHG PHILIBIN E SILVA</div>
 	
-    
-
-    <nav>
+	    <nav>
             <a id="home" href="/">Home</a> |
             <a id="about" href="/about">About</a> |
             <a id="contact" href="/">Contact</a> 
@@ -30,7 +24,6 @@
 
 		<section>
 		    <h1>Essays:</h1>
-
 			
 		    <p>
 			    <ul>
