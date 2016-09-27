@@ -62,9 +62,6 @@ app.get('/post*',function(req,res)	{
 
     var postExits = doesBlogPostExist(getFileName(req.url));
     if(postExits){
-
-        console.log("gets this far?");
-
         fs.readFile(currentDirectory + 'templates/entry', 'utf8', function(err, template) {
             if (err) {
                 res.writeHead(404, {'Content-Type': 'text/html'});
@@ -102,7 +99,7 @@ app.get('/post*',function(req,res)	{
 
                 var html = '';
                 html = template.replace('{{Contents}}', post);
-                html = html.replace('{{Title}}', jsonString.title);
+                html = html.replace('{{Title}}', (jsonString.title).stripDashes());
                 html = html.replace('{{Date}}', getDateString(jsonString.submitDate));
                 res.writeHead(200, {'Content-Type': 'text/html'});
                 res.end(html);
@@ -230,11 +227,7 @@ app.get('/', function (req, res){
             if (err) {
                 console.log(err);
             }
-            
-            // files is an array of blog posts titles / filenames
-            
-            console.log(files);
-            
+        
             // read in our home template
             fs.readFile(currentDirectory + 'templates/home', 'utf8', function(err, templateString) {
                 if (err) {
@@ -247,7 +240,7 @@ app.get('/', function (req, res){
                 
                 files.forEach(function(blogPost) {
                     blogPosts += htmlForPosts.replace('{{Post1.Link}}', '/post/' + blogPost)
-                                             .replace('{{Post1.Title}}', blogPost);
+                                             .replace('{{Post1.Title}}', blogPost.stripDashes());
                 });
                 
                 var html = templateString.replace('{{Title}}', 'Latest blog posts')
@@ -263,12 +256,7 @@ app.get('/', function (req, res){
 
 
 app.get('/*',function(req,res){
-    // read the html file
-    // and spit them into the response
-  
-  if(res.req.url == "/abcd"){
-    console.log("oh shit");
-  }
+
     fs.readFile(currentDirectory + req.url, 'utf8', function (err,data) {
     if (err) {
         res.writeHead(404, {'Content-Type': 'text/html'});
@@ -330,6 +318,13 @@ String.prototype.startsWith = function(str) {
     return this.indexOf(str) === 0;
 };
 
+String.prototype.stripDashes = function() {
+    var temp = this.replace("---","{temp}");
+    var temp2 = temp.replace(/-/g," ");
+    var temp3 = temp2.replace("{temp}"," - ");
+    return temp3;
+}
+
 String.prototype.replaceContents = function(token1, token2, newContents) {
     var startTokenPos = this.indexOf(token1);
     var endTokenPos = this.indexOf(token2) + token2.length;
@@ -345,6 +340,8 @@ String.prototype.getTextBetweenTokens = function(token1, token2) {
     
     return this.substring(startTokenPos, endTokenPos);
 };
+
+
 
 var postObject = function(url, obj, callback) {
 	var xmlhttp = new XMLHttpRequest();
