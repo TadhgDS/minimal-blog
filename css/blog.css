@@ -1,4 +1,7 @@
 @import 'https://fonts.googleapis.com/css?family=Roboto+Slab|7';
+@import 'https://fonts.googleapis.com/css?family=Source+Code+Pro';
+
+
 
 * {
     font-family: 'Roboto Slab', serif;
@@ -52,14 +55,34 @@ aside {
 	color:black;
 }
 
-code {
-  font-family: "Lucida Console", Monaco, monospace;
-  font-style: normal;
-  font-weight: 550;
-  font-size: 0.8em;
-  color: grey;
+pre {
+    font-size: 90%;
+    line-height: 1.2em;
+    font-family: 'Source Code Pro', monospace;
+    white-space: pre; 
+    white-space: pre-wrap; 
+    white-space: -moz-pre-wrap; 
+    white-space: -o-pre-wrap; 
 
+    height:1%;
+    width: auto;
+    display: block;
+    clear: both;
+    color: #555555;
+    margin: auto 10px auto 10px;
+    background: #f4f4f4;
+    border: solid 1px #e1e1e1
+} 
+code { 
+    font-size: 90%;
+    line-height: 1.2em;
+  
+font-family: 'Source Code Pro', monospace;
+    display: inline; 
+    color: #555555;
+    background: #f4f4f4;
 }
+
 
 section {
     padding-right: 40%; 
@@ -68,16 +91,6 @@ section {
     height: 100%;
     font-size:0.6em;
 }
-
-/*
-ul a:link {
-    color: black;
-}
-
-ul a:visited {
-    color: black;
-}
-*/
 
 article {
   font-size: small;
