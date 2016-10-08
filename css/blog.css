@@ -73,11 +73,11 @@ pre {
     background: #f4f4f4;
     border: solid 1px #e1e1e1
 } 
+
 code { 
     font-size: 90%;
-    line-height: 1.2em;
-  
-font-family: 'Source Code Pro', monospace;
+    line-height: 1.2em;  
+    font-family: 'Source Code Pro', monospace;
     display: inline; 
     color: #555555;
     background: #f4f4f4;

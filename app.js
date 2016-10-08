@@ -20,8 +20,6 @@ app.use(multer());
 
 
 app.get('/blog.css',function(req,res){
-	// read the html file
-    // and spit them into the response
     fs.readFile(currentDirectory + 'css/blog.css', 'utf8', function (err,data) {
         if (err) {
             res.writeHead(404, {'Content-Type': 'text/html'});
@@ -37,8 +35,6 @@ app.get('/blog.css',function(req,res){
 });
 
 app.get('/normalize.css',function(req,res){
-	// read the html file
-    // and spit them into the response
     fs.readFile(currentDirectory + 'css/blog.css', 'utf8', function (err,data) {
         if (err) {
             res.writeHead(404, {'Content-Type': 'text/html'});
@@ -74,7 +70,9 @@ app.get('/post*',function(req,res)	{
 
                 var jsonString = JSON.parse(postMarkUp);
                 var post = markdown.toHTML(jsonString.mainText);
-        
+
+
+            
                 var sidenoteWithTags;
                 if(post.indexOf("{{1}}") > -1){
                     sidenoteWithTags = "<aside>" + jsonString.sn1 + "</aside>"; 
@@ -96,6 +94,7 @@ app.get('/post*',function(req,res)	{
                     sidenoteWithTags = "<aside>" + jsonString.sn5 + "</aside>";
                     post = post.replace("{{5}}",sidenoteWithTags);
                 }
+
 
                 var html = '';
                 html = template.replace('{{Contents}}', post);
@@ -192,16 +191,6 @@ app.post('/preview/',function(req,res){
 
 });
 
-/*
-app.get('/edit',function(req,res){
-    fs.readFile(currentDirectory + 'templates/edit.html', 'utf8', function(err, template) {
-        if (err) console.log(err);
-           
-        res.writeHead(200, {'Content-Type': 'text/html'});
-        res.end(template);
-    });
-});
-*/
 
 /*============================
 
@@ -210,10 +199,6 @@ app.get('/edit',function(req,res){
 ==============================*/
 
 app.get('/', function (req, res){
-
-
-
-        console.log(currentDirectory + 'css' + req.path);
     if (req.path.indexOf('.css') !== -1)
     {
     
@@ -258,20 +243,17 @@ app.get('/', function (req, res){
 app.get('/*',function(req,res){
 
     fs.readFile(currentDirectory + req.url, 'utf8', function (err,data) {
-    if (err) {
-        res.writeHead(404, {'Content-Type': 'text/html'});
-        res.end('Ooops ' + req.url + ' couldnt be found!');
-        return console.log(err);
-    }
-    
-    var type =  getFileExtension(req.url);
-    
-    res.writeHead(200, {'Content-Type': 'text/' + type});
-    res.end(data);
-});
-
-
-// console.log(req);
+        if (err) {
+            res.writeHead(404, {'Content-Type': 'text/html'});
+            res.end('Ooops ' + req.url + ' couldnt be found!');
+            return console.log(err);
+        }
+        
+        var type =  getFileExtension(req.url);
+        
+        res.writeHead(200, {'Content-Type': 'text/' + type});
+        res.end(data);
+    });
 
 });
 
