@@ -13,8 +13,7 @@
 
         <nav>
             <a id="home" href="/">Home</a> |
-            <a id="About" href="/about">About</a> |
-            <a id="About" href="/">Contact</a> 
+            <a id="About" href="/about">About</a>
         </nav>    
             <article>
                 <h5 id="postdate">{{Date}}</h5>
