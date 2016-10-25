@@ -69,8 +69,8 @@ app.get('/post*',function(req,res)	{
 
 
                 var jsonString = JSON.parse(postMarkUp);
-                var post = markdown.toHTML(jsonString.mainText);
-
+                //var post = markdown.toHTML(jsonString.mainText);
+                var post = markDownToHTMLwithCodeFormatting(jsonString.mainText);
 
             
                 var sidenoteWithTags;
@@ -177,13 +177,30 @@ app.get('/about', function (req, res){
     });
 });
 
+app.get('/books', function (req, res){
+    fs.readFile(currentDirectory + '/templates/books.html', 'utf8', function (err,data) {
+        if (err) {
+            res.writeHead(404, {'Content-Type': 'text/html'});
+            res.end('Ooops ' + 'books.html' + ' couldnt be found!');
+            return console.log(err);
+        }
+        
+        var type =  getFileExtension('books.html');
+        res.writeHead(200, {'Content-Type': 'text/' + type});
+        res.end(data);
+    });
+});
 
 app.post('/preview/',function(req,res){
 
     var jsonString = req.body;
     var theObject = { "title":req.body.title , "textarea":req.body.textarea };
+    
+
+
     theObject.title = markdown.toHTML(theObject.title);
-    theObject.textarea = markdown.toHTML(theObject.textarea);
+//    theObject.textarea = markdown.toHTML(theObject.textarea);
+    theObject.textarea = markDownToHTMLwithCodeFormatting(theObject.textarea);
     
 
     res.writeHead(200, {'Content-Type': 'application/json'});
@@ -265,6 +282,7 @@ var server = app.listen(3000, function () {
 	var host = server.address().address;
   	var port = server.address().port;
 
+
  	console.log('Example app listening at http://%s:%s', host, port)
 
 });
@@ -306,6 +324,39 @@ String.prototype.stripDashes = function() {
     var temp3 = temp2.replace("{temp}"," - ");
     return temp3;
 }
+
+
+ var markDownToHTMLwithCodeFormatting = function(postContents) {
+    var codeBlocks = [];
+    
+
+     //while there is an index of {{code}} && its not in the map
+    var i = 0;
+    while(postContents.indexOf("{{code}}") > -1 && postContents.indexOf("{{/code}}") > -1){
+        var startBlockPos = postContents.indexOf("{{code}}") + 8;
+        var endBlockPos = postContents.indexOf("{{/code}}") - 1;
+        
+        var codeblock = postContents.substring(startBlockPos, endBlockPos);
+        postContents = postContents.replace(codeblock, "");
+        postContents = postContents.replace("{{code}}" , "{{c" + i +"}}");
+        postContents = postContents.replace("{{/code}}" , "{{/c" + i +"}}");
+        codeBlocks[i] = codeblock;
+        i++;
+    }
+    
+
+    var postContentsWithMarkup = markdown.toHTML(postContents);
+
+    
+    for(var j = 0; j < codeBlocks.length; j++){
+        var codeBlockToInsert = "<pre><code>" + codeBlocks[j] + "</code></pre></br>";
+        postContentsWithMarkup = postContentsWithMarkup.replace("<p>{{c" + j +"}}", codeBlockToInsert);
+        postContentsWithMarkup = postContentsWithMarkup.replace("{{/c" + j +"}}</p>", "");
+    }
+
+    return postContentsWithMarkup;
+}
+
 
 String.prototype.replaceContents = function(token1, token2, newContents) {
     var startTokenPos = this.indexOf(token1);
