@@ -252,7 +252,7 @@ app.get('/', function (req, res){
                     var jsonString = JSON.parse(jsonObject);
                     
                     var postlink = "<a id='postlink' href=" + '/post/' + blogPost +  ">Read more »</a>";
-                    blurb = '' + jsonString.mainText.substring(0,300);
+                    blurb = '' + jsonString.mainText.substring(0,300) + "...";
                     blogPosts = blogPosts.replace('{{Post1.Blurb}}', blurb + "<br>" + postlink);
                 });
 
