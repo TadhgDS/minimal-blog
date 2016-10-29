@@ -15,7 +15,6 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 })); 
 
 var multer = require('multer'); 
-app.use(multer());
 
 
 
@@ -229,6 +228,8 @@ app.get('/', function (req, res){
             if (err) {
                 console.log(err);
             }
+
+
         
             // read in our home template
             fs.readFile(currentDirectory + 'templates/home', 'utf8', function(err, templateString) {
@@ -245,6 +246,20 @@ app.get('/', function (req, res){
                                              .replace('{{Post1.Title}}', blogPost.stripDashes());
                 });
                 
+                files.forEach(function(blogPost) {
+                    var blurb = "";        
+                    var jsonObject = fs.readFileSync(currentDirectory + '/blog-posts/' + blogPost);
+                    var jsonString = JSON.parse(jsonObject);
+                    
+                    var postlink = "<a id='postlink' href=" + '/post/' + blogPost +  ">Read more »</a>";
+                    blurb = '' + jsonString.mainText.substring(0,300);
+                    blogPosts = blogPosts.replace('{{Post1.Blurb}}', blurb + "<br>" + postlink);
+                });
+
+
+
+
+
                 var html = templateString.replace('{{Title}}', 'Latest blog posts')
                                          .replaceContents("{{REPEAT}}", "{{ENDREPEAT}}", blogPosts);
                 
@@ -329,13 +344,11 @@ String.prototype.stripDashes = function() {
  var markDownToHTMLwithCodeFormatting = function(postContents) {
     var codeBlocks = [];
     
-
-     //while there is an index of {{code}} && its not in the map
     var i = 0;
     while(postContents.indexOf("{{code}}") > -1 && postContents.indexOf("{{/code}}") > -1){
         var startBlockPos = postContents.indexOf("{{code}}") + 8;
         var endBlockPos = postContents.indexOf("{{/code}}") - 1;
-        
+
         var codeblock = postContents.substring(startBlockPos, endBlockPos);
         postContents = postContents.replace(codeblock, "");
         postContents = postContents.replace("{{code}}" , "{{c" + i +"}}");
@@ -344,14 +357,17 @@ String.prototype.stripDashes = function() {
         i++;
     }
     
-
     var postContentsWithMarkup = markdown.toHTML(postContents);
-
     
     for(var j = 0; j < codeBlocks.length; j++){
-        var codeBlockToInsert = "<pre><code>" + codeBlocks[j] + "</code></pre></br>";
-        postContentsWithMarkup = postContentsWithMarkup.replace("<p>{{c" + j +"}}", codeBlockToInsert);
-        postContentsWithMarkup = postContentsWithMarkup.replace("{{/c" + j +"}}</p>", "");
+        
+        var codeBlockToInsert = codeBlocks[j];
+        codeBlockToInsert = codeBlockToInsert.replace(/</g, "&lt;");
+        codeBlockToInsert = codeBlockToInsert.replace(/>/g, "&gt;");
+        var formattedCodeBlockToInsert = "<pre><code>" + codeBlockToInsert + "</code></pre></br>";
+        
+        postContentsWithMarkup = postContentsWithMarkup.replace("{{c" + j +"}}", formattedCodeBlockToInsert);
+        postContentsWithMarkup = postContentsWithMarkup.replace("{{/c" + j +"}}", "");
     }
 
     return postContentsWithMarkup;

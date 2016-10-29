@@ -13,7 +13,7 @@
     </head>
 	
     <body>
-        <div id="nametitle">TADHG PHILIBIN E SILVA</div>
+        <div id="nametitle">Tadhg Philibin e Silva</div>
 	
 	    <nav>
             <a id="home" href="/">Home</a> |
@@ -23,13 +23,14 @@
 
 
 		<section>
-		    <h1>Essays:</h1>
+		    <h1>Writings:</h1>
 			
 		    <p>
 			    <ul>
 			        {{REPEAT}}
 			        <li>
 			            <h2><a href="{{Post1.Link}}">{{Post1.Title}}</a></h2>
+			            {{Post1.Blurb}}
 			        </li>
 			        {{ENDREPEAT}}
 
