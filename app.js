@@ -70,7 +70,7 @@ app.get('/post*',function(req,res)	{
             
                 var sidenoteWithTags;
                 if(post.indexOf("{{1}}") > -1){
-                    sidenoteWithTags = "<aside>" + jsonString.sn1 + "</aside>"; 
+                    sidenoteWithTags = "</p><aside>" + jsonString.sn1 + "</aside><p>"; 
                     post = post.replace("{{1}}",sidenoteWithTags);
                 }
                 if(post.indexOf("{{2}}") > -1){

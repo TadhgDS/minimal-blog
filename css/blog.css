@@ -3,10 +3,40 @@
 @import 'https://fonts.googleapis.com/css?family=Source+Code+Pro:700';
 
 * {
-    /*font-family: 'Lato', sans-serif;*/
     font-family: 'Open Sans', sans-serif;
     font-weight: 100;
     text-decoration:none;
+}
+
+@media screen and (min-width: 550px) {
+    section {
+        padding-left: 12%;
+        padding-right: 40%;         
+    }
+
+    article {
+        padding-left: 12%;
+        padding-right: 40%; 
+    }
+
+    nav { 
+        padding-left: 12%; 
+    }
+
+    aside {
+        right: 20%;
+        width: 18%;
+        position: absolute;
+    }
+
+    #nametitle {
+        padding-left: 12%; 
+    }
+
+    div #disqus_thread {
+        padding-left: 12%;
+        padding-right: 40%;
+    }
 }
 
 * a:link {
@@ -32,24 +62,18 @@ body {
 
 #nametitle {
     font-size: 1.6em;
-    padding-left: 12%; 
     font-family: 'Merriweather', serif;
 }
 
 nav {
     line-height:30px;
-   	padding-left: 12%; 
     height:20px; 
-
     font-size: 0.8em;
 }
 
 aside {
-	font-size: x-small;
-	right: 20%;
-	width: 18%;
-	position: absolute;
-	color:black;
+    font-size: x-small;
+    color:black;
 }
 
 pre {
@@ -84,8 +108,6 @@ code {
 
 
 section {
-    padding-right: 40%; 
-    padding-left: 12%;  
     background-color: #fff;
     height: 100%;
     font-size:0.9em;
@@ -93,8 +115,6 @@ section {
 
 article {
   font-size: medium;
-  padding-left: 12%;
-  padding-right: 40%;
 }
 
 
@@ -114,7 +134,3 @@ h1{
     line-height:1em;
 }
 
-div #disqus_thread {
-  padding-left: 12%;
-  padding-right: 40%;
-}
