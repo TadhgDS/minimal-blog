@@ -224,49 +224,61 @@ app.get('/', function (req, res){
     {
 	 	var blogPostsFolder = currentDirectory + 'blog-posts/';
         
-        fs.readdir(blogPostsFolder, function(err, files) {
+        var files = fs.readdirSync(blogPostsFolder);
+
+        var orderedFiles = [];
+        for(var x = 0; x < files.length; x++){
+            var postTitle = files[x];
+            var blogPostFile = fs.readFileSync(currentDirectory + '/blog-posts/' + postTitle);
+
+            orderedFiles[x] = JSON.parse(blogPostFile);
+        }
+        orderedFiles.sort(sortByDate);
+
+        console.log(orderedFiles)
+
+        //sort files by date
+
+
+    
+        // read in our home template
+        fs.readFile(currentDirectory + 'templates/home', 'utf8', function(err, templateString) {
             if (err) {
                 console.log(err);
             }
+            
 
-
-        
-            // read in our home template
-            fs.readFile(currentDirectory + 'templates/home', 'utf8', function(err, templateString) {
-                if (err) {
-                    console.log(err);
-                }
-                
-                templateString = '' + templateString;
-                var htmlForPosts = templateString.getTextBetweenTokens("{{REPEAT}}", "{{ENDREPEAT}}");
-                var blogPosts = '';
-                
-                files.forEach(function(blogPost) {
-                    blogPosts += htmlForPosts.replace('{{Post1.Link}}', '/post/' + blogPost)
-                                             .replace('{{Post1.Title}}', blogPost.stripDashes());
-                });
-                
-                files.forEach(function(blogPost) {
-                    var blurb = "";        
-                    var jsonObject = fs.readFileSync(currentDirectory + '/blog-posts/' + blogPost);
-                    var jsonString = JSON.parse(jsonObject);
-                    
-                    var postlink = "<a id='postlink' href=" + '/post/' + blogPost +  ">Read more »</a>";
-                    blurb = '' + jsonString.mainText.substring(0,300) + "...";
-                    blogPosts = blogPosts.replace('{{Post1.Blurb}}', blurb + "<br>" + postlink);
-                });
-
-
-
-
-
-                var html = templateString.replace('{{Title}}', 'Latest blog posts')
-                                         .replaceContents("{{REPEAT}}", "{{ENDREPEAT}}", blogPosts);
-                
-                res.writeHead(200, {'Content-Type': 'text/html'});
-                res.end(html);
+            templateString = '' + templateString;
+            var htmlForPosts = templateString.getTextBetweenTokens("{{REPEAT}}", "{{ENDREPEAT}}");
+            var blogPosts = '';
+            
+            orderedFiles.forEach(function(blogPostObj) {
+                blogPosts += htmlForPosts.replace('{{Post1.Link}}', '/post/' + blogPostObj)
+                                         .replace('{{Post1.Title}}', blogPostObj.title.stripDashes());
             });
+         
+            
+            orderedFiles.forEach(function(blogPost) {
+                var blurb = "";        
+               // var jsonObject = fs.readFileSync(currentDirectory + '/blog-posts/' + blogPost);
+                //var jsonString = JSON.parse(jsonObject);
+                
+                var postlink = "<a id='postlink' href=" + '/post/' + blogPost +  ">Read more »</a>";
+                blurb = '' + blogPost.mainText.substring(0,300) + "...";
+                blogPosts = blogPosts.replace('{{Post1.Blurb}}', blurb + "<br>" + postlink);
+            });
+
+
+
+
+
+            var html = templateString.replace('{{Title}}', "Tadhg's page. Software, Math and Literature.")
+                                     .replaceContents("{{REPEAT}}", "{{ENDREPEAT}}", blogPosts);
+            
+            res.writeHead(200, {'Content-Type': 'text/html'});
+            res.end(html);
         });
+    
 	}
 });
 
@@ -419,4 +431,12 @@ function getDateString(UNIX_timestamp){
     var n = date.indexOf(dateObj.getFullYear());
     var date = date.substring(0,n+4);
     return date;
+}
+
+function sortByDate(a,b) {
+  if (a.submitDate > b.submitDate)
+    return -1;
+  if (a.submitDate < b.submitDate)
+    return 1;
+  return 0;
 }
