@@ -14,8 +14,6 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 	extended: false
 })); 
 
-var multer = require('multer'); 
-
 
 
 app.get('/blog.css',function(req,res){
@@ -68,9 +66,7 @@ app.get('/post*',function(req,res)	{
 
 
                 var jsonString = JSON.parse(postMarkUp);
-                //var post = markdown.toHTML(jsonString.mainText);
                 var post = markDownToHTMLwithCodeFormatting(jsonString.mainText);
-
             
                 var sidenoteWithTags;
                 if(post.indexOf("{{1}}") > -1){
@@ -113,7 +109,8 @@ app.post('/submit*',function(req,res){
 
         res.json(req.body.title + req.body.textarea);
         var title = req.body.title;
-        title = title.replace(/ /g,"-");
+      //  title = title.replace(/ /g,"-");
+        title = titleToPath(title);
         var textarea = req.body.textarea;
 
         //json obj
@@ -230,54 +227,39 @@ app.get('/', function (req, res){
         for(var x = 0; x < files.length; x++){
             var postTitle = files[x];
             var blogPostFile = fs.readFileSync(currentDirectory + '/blog-posts/' + postTitle);
-
             orderedFiles[x] = JSON.parse(blogPostFile);
         }
         orderedFiles.sort(sortByDate);
-
-        console.log(orderedFiles)
-
-        //sort files by date
-
-
     
         // read in our home template
-        fs.readFile(currentDirectory + 'templates/home', 'utf8', function(err, templateString) {
-            if (err) {
-                console.log(err);
-            }
-            
+        var templateString = fs.readFileSync(currentDirectory + 'templates/home');            
 
-            templateString = '' + templateString;
+        templateString = '' + templateString;
+
+        var blogPosts = '';
+        
+        orderedFiles.forEach(function(blogPostObj) {
             var htmlForPosts = templateString.getTextBetweenTokens("{{REPEAT}}", "{{ENDREPEAT}}");
-            var blogPosts = '';
-            
-            orderedFiles.forEach(function(blogPostObj) {
-                blogPosts += htmlForPosts.replace('{{Post1.Link}}', '/post/' + blogPostObj)
-                                         .replace('{{Post1.Title}}', blogPostObj.title.stripDashes());
-            });
-         
-            
-            orderedFiles.forEach(function(blogPost) {
-                var blurb = "";        
-               // var jsonObject = fs.readFileSync(currentDirectory + '/blog-posts/' + blogPost);
-                //var jsonString = JSON.parse(jsonObject);
-                
-                var postlink = "<a id='postlink' href=" + '/post/' + blogPost +  ">Read more »</a>";
-                blurb = '' + blogPost.mainText.substring(0,300) + "...";
-                blogPosts = blogPosts.replace('{{Post1.Blurb}}', blurb + "<br>" + postlink);
-            });
 
-
-
-
-
-            var html = templateString.replace('{{Title}}', "Tadhg's page. Software, Math and Literature.")
-                                     .replaceContents("{{REPEAT}}", "{{ENDREPEAT}}", blogPosts);
-            
-            res.writeHead(200, {'Content-Type': 'text/html'});
-            res.end(html);
+            htmlForPosts = htmlForPosts.replace('{{Post1.Link}}', '/post/' + (titleToPath(blogPostObj.title)));
+            htmlForPosts = htmlForPosts.replace('{{Post1.Title}}', blogPostObj.title);
+            blogPosts += htmlForPosts;
         });
+     
+        
+        orderedFiles.forEach(function(blogPostObj) {
+            var blurb = "";              
+            var postlink = "<a id='postlink' href=" + '/post/' + (titleToPath(blogPostObj.title)) +  ">Read more »</a>";
+            blurb = '' + blogPostObj.mainText.substring(0,300) + "...";
+            blogPosts = blogPosts.replace('{{Post1.Blurb}}', blurb + "<br>" + postlink);
+        });
+
+        var html = templateString.replace('{{Title}}', "Tadhg's page. Software, Math and Literature.")
+                                 .replaceContents("{{REPEAT}}", "{{ENDREPEAT}}", blogPosts);
+        
+        res.writeHead(200, {'Content-Type': 'text/html'});
+        res.end(html);
+    
     
 	}
 });
@@ -402,6 +384,9 @@ String.prototype.getTextBetweenTokens = function(token1, token2) {
     return this.substring(startTokenPos, endTokenPos);
 };
 
+var titleToPath = function(postTitle){
+    return postTitle.replace(/ /g,"-");
+}
 
 
 var postObject = function(url, obj, callback) {
